@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic-Tac-Toe Game</title>
+    <style>
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            font-size: 24px;
+            cursor: pointer;
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic-Tac-Toe</h1>
+    <div id="board">
+        <div class="cell" onclick="makeMove(0, 0)"></div>
+        <div class="cell" onclick="makeMove(0, 1)"></div>
+        <div class="cell" onclick="makeMove(0, 2)"></div>
+        <div class="cell" onclick="makeMove(1, 0)"></div>
+        <div class="cell" onclick="makeMove(1, 1)"></div>
+        <div class="cell" onclick="makeMove(1, 2)"></div>
+        <div class="cell" onclick="makeMove(2, 0)"></div>
+        <div class="cell" onclick="makeMove(2, 1)"></div>
+        <div class="cell" onclick="makeMove(2, 2)"></div>
+    </div>
+
+    <div id="status"></div>
+
+    <script>
+        let currentPlayer = 'X';
+        let board = [
+            ['', '', ''],
+            ['', '', ''],
+            ['', '', '']
+        ];
+
+        function makeMove(row, col) {
+            if (board[row][col] === '' && !checkWinner()) {
+                board[row][col] = currentPlayer;
+                document.getElementById('status').innerText = `Player ${currentPlayer}'s turn`;
+                document.getElementById('board').children[row * 3 + col].innerText = currentPlayer;
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                checkWinner();
+            }
+        }
+
+        function checkWinner() {
+            for (let i = 0; i < 3; i++) {
+                if (
+                    board[i][0] === currentPlayer &&
+                    board[i][1] === currentPlayer &&
+                    board[i][2] === currentPlayer
+                ) {
+                    document.getElementById('status').innerText = `Player ${currentPlayer} wins!`;
+                    return true;
+                }
+                if (
+                    board[0][i] === currentPlayer &&
+                    board[1][i] === currentPlayer &&
+                    board[2][i] === currentPlayer
+                ) {
+                    document.getElementById('status').innerText = `Player ${currentPlayer} wins!`;
+                    return true;
+                }
+            }
+
+            if (
+                board[0][0] === currentPlayer &&
+                board[1][1] === currentPlayer &&
+                board[2][2] === currentPlayer
+            ) {
+                document.getElementById('status').innerText = `Player ${currentPlayer} wins!`;
+                return true;
+            }
+            if (
+                board[0][2] === currentPlayer &&
+                board[1][1] === currentPlayer &&
+                board[2][0] === currentPlayer
+            ) {
+                document.getElementById('status').innerText = `Player ${currentPlayer} wins!`;
+                return true;
+            }
+
+            let isTie = true;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (board[i][j] === '') {
+                        isTie = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isTie) {
+                document.getElementById('status').innerText = "It's a tie!";
+                return true;
+            }
+
+            return false;
+        }
+    </script>
+</body>
+</html>
